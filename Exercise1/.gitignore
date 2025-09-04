@@ -1,0 +1,38 @@
+# =============== #
+# Unity .gitignore
+# =============== #
+
+# Pastas geradas automaticamente
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+
+# Cache do pacote
+[Pp]ackageCache/
+
+# User-specific
+UserSettings/
+*.pidb
+*.suo
+*.user
+*.userprefs
+*.csproj
+*.unityproj
+*.sln
+*.svd
+
+# Unity crash reports
+sysinfo.txt
+
+# Builds de plataforma
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# Arquivos de backup/temporários do sistema
+.DS_Store
+Thumbs.db
