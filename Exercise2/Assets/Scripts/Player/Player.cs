@@ -4,8 +4,13 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     [SerializeField] Transform playerModel;
+    
+    [SerializeField] GameObject projectile_Prefab;
+    
     [SerializeField] Transform spinningSword;
-
+    
+    [SerializeField] float projectile_Speed;
+    
     [SerializeField] private float Spin_Radius;
     [SerializeField] private float Spin_RotationSpeed;
     [SerializeField] private float Spin_OrbitSpeed;
@@ -24,6 +29,7 @@ public class Player : MonoBehaviour
         transform.position += movement.normalized * moveSpeed * Time.deltaTime;
 
         SpinBlade();
+        Shooting();
     }
 
     private void SpinBlade()
@@ -31,9 +37,12 @@ public class Player : MonoBehaviour
         /* Professor solution
         // Increment angle based on orbit speed
         angle += Time.deltaTime * Spin_OrbitSpeed;
+        
         // Calculate the new position of the spinning sword using polar coordinates
         Vector3 orbitPosition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * Spin_Radius;
+        
         spinningSword.position = transform.position + orbitPosition ;
+        
         spinningSword.Rotate(Vector3.forward * -Spin_RotationSpeed * Time.deltaTime);
         */
         
@@ -42,6 +51,7 @@ public class Player : MonoBehaviour
 
         // Calculate the new position of the spinning sword using polar coordinates
         Vector3 orbitPos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * Spin_Radius;
+        
         spinningSword.position = transform.position + orbitPos;
 
         // Tangent of the circle: derivative of (cos, sin) = (-sin, cos)
@@ -50,5 +60,20 @@ public class Player : MonoBehaviour
         // If the sword sprite points to +X, use .right
         spinningSword.right = -tangent; //Align the sword to the tangent
         
+    }
+
+    private void Shooting()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject projectile = Instantiate(projectile_Prefab, transform.position, Quaternion.identity);
+            
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0; // Ensure the z-coordinate is zero for 2D
+            
+            Vector3 direction = (mousePosition - transform.position).normalized;
+            
+            projectile.GetComponent<Projectile>().Initialize(direction, 4);
+        }
     }
 }

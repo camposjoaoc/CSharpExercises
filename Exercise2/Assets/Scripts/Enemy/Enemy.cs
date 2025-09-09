@@ -12,6 +12,11 @@ public class Enemy : MonoBehaviour
         target = GameObject.FindAnyObjectByType<Player>().transform;
     }
 
+    public void Initialize(Transform aTarget)
+    {
+        target = aTarget;
+    }
+
     private void Update()
     {
         // Move towards the target direction = to - from.normalized
