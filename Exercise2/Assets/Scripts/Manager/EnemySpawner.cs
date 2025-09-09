@@ -1,62 +1,47 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPrefab; // Prefab of the enemy to spawn
-    private List<GameObject> enemies = new();
-    private float timer;
+    [SerializeField] private GameObject enemyPrefab; // Prefab do inimigo
+    [SerializeField] private int maxEnemies = 20; // Quantos inimigos no total
+    [SerializeField] private float spawnInterval = 2f; // Intervalo entre spawns
+    [SerializeField] private Vector2 spawnRangeX = new(-10f, 10f); 
+    [SerializeField] private Vector2 spawnRangeY = new(-5f, 5f); 
 
+    private List<GameObject> enemies = new List<GameObject>();
+    private float timer;
 
     private void Start()
     {
-        //SpawnMultipleEnemies(20);
-        timer = 2;
+        timer = spawnInterval;
     }
 
     private void Update()
     {
-        if (timer >= 0)
-        {
-            timer -= Time.deltaTime;
+        // Atualiza o timer
+        timer -= Time.deltaTime;
 
-            if (timer <= 0)
-            {
-                SpawnEnemy();
-                timer = 2;
-            }
+        // Se já passou o tempo e ainda não chegou no limite
+        if (timer <= 0 && enemies.Count < maxEnemies)
+        {
+            SpawnEnemy();
+            timer = spawnInterval;
         }
 
-        // if (Input.GetKeyDown(KeyCode.E))
-        // {
-        //    timer = 2; 
-        //       SpawnEnemy();
-        // }
-
+        // Remove referências de inimigos destruídos
         enemies.RemoveAll(enemy => enemy == null);
-        if (enemies.Count > 0)
-        {
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                enemies[i].transform.position += Vector3.down * Time.deltaTime;
-            }
-        }
     }
 
     private void SpawnEnemy()
     {
-        GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        Vector3 randomPos = new Vector3(
+            Random.Range(spawnRangeX.x, spawnRangeX.y),
+            Random.Range(spawnRangeY.x, spawnRangeY.y), // Usando Y (2D)
+            0
+        );
+
+        GameObject newEnemy = Instantiate(enemyPrefab, randomPos, Quaternion.identity);
         enemies.Add(newEnemy);
     }
-
-    /*
-    private void SpawnMultipleEnemies(int count)
-    {
-       for (int i = 0; i < count; i++)
-       {
-          SpawnEnemy();
-       }
-    }
-    */
 }

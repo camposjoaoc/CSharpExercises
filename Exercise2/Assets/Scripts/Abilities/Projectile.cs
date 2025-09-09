@@ -16,6 +16,5 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         transform.position += velocity * Time.deltaTime;
-        
     }
 }
