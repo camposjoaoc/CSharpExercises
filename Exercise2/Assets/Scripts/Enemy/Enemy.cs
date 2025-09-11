@@ -7,17 +7,19 @@ public class Enemy : MonoBehaviour
     private Transform target; //Temporary target position
     private Vector3 velocity;
     
+    /*
     private void Start()
     {
         target = GameObject.FindAnyObjectByType<Player>().transform;
     }
+    */
 
     public void Initialize(Transform aTarget)
     {
         target = aTarget;
     }
 
-    private void Update()
+    public void UpdateEnemy()
     {
         // Move towards the target direction = to - from.normalized
         velocity = (target.position - transform.position).normalized;
@@ -27,9 +29,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float someDamage)
     {
         Health -= someDamage;
-        if (Health <= 0)
-        {
-            Destroy(gameObject);
-        }
+    }
+
+    public bool IsAlive()
+    {
+        return Health > 0; // Returns true if health is above zero
     }
 }
