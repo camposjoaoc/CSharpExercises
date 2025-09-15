@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -15,10 +17,18 @@ public class Player : MonoBehaviour
     [SerializeField] private float Spin_RotationSpeed;
     [SerializeField] private float Spin_OrbitSpeed;
 
+    [SerializeField] float Health;
+    [SerializeField] float MaxHealth;
+    [SerializeField] Image healthBar;
+    [SerializeField] private TextMeshProUGUI healthText;
+
     float angle; // Current angle for orbiting
 
     void Update()
     {
+        healthText.text = Health.ToString("F0") + "/" + MaxHealth.ToString();
+        healthBar.fillAmount = Health / MaxHealth;
+        
         float y = Input.GetAxisRaw("Vertical");
         float x = Input.GetAxisRaw("Horizontal");
 
